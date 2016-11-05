@@ -1,0 +1,198 @@
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>FFT/Divide-and-Conquer-Carpentry</title>
+
+		<script>
+var stopAt = 100;
+var counter = 0;
+var start, end;
+var deltat = 0;
+var average = 0;
+var length = 4096;
+var opFFT = 2 * length * Math.log2(length);
+var opDFT = length * length;
+var intervalID = 0;
+
+/* Two utility functions to get "German" number formatting (comma as decimal
+ * separator, and a period as thousands separator).
+ */
+function gerFloat(num) {
+	return num.toString().replace(/\./g, ",");
+}
+
+function thouSep(num) {
+	// Adapted from: http://stackoverflow.com/questions/2901102/how-to-print-a-number-with-commas-as-thousands-separators-in-javascript#2901298
+	return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+}
+
+// Print the number of operations after DOM has finished loading.
+function init() {
+	document.getElementById("opFFT").innerHTML = "<strong>" + thouSep(opFFT) +
+		"</strong> Operationen";
+
+	document.getElementById("opDFT").innerHTML = "<strong>" + thouSep(opDFT) +
+		"</strong> Operationen";
+}
+
+// Print the results after stopAt spacebar presses.
+function results() {
+	deltat = end.getTime() - start.getTime();
+	average = deltat / stopAt;
+	timeSpanFFT = opFFT * average;
+	hourFFT = Math.floor(timeSpanFFT / 3600000);
+	minsFFT = Math.floor(timeSpanFFT / 60000 - hourFFT * 60);
+	secsFFT = Math.ceil(timeSpanFFT / 1000 - hourFFT * 3600 - minsFFT * 60);
+	timeSpanDFT = opDFT * average;
+	daysDFT = Math.floor(timeSpanDFT / 86400000);
+
+	document.getElementById("time").innerHTML = gerFloat(deltat/1000) + " s";
+	document.getElementById("average").innerHTML = " (∅ " + gerFloat(average) +
+		" ms/Operation)";
+	document.getElementById("timeFFT").innerHTML = "<strong>" + hourFFT + " h "
+		+ minsFFT + " min " + secsFFT + " s</strong>";
+	document.getElementById("timeDFT").innerHTML = "<strong>> " + daysDFT +
+		" Tage</strong> ("+ new Date(start.getTime()
+					+ timeSpanDFT).toLocaleString() + " Uhr)";
+}
+
+// Callback function for spacebar key events.
+function spaceBarCounter(event) {
+	if (event.defaultPrevented) {
+		return;
+	}
+
+	switch (event.key) {
+		case "Spacebar":
+		case " ":
+			counter++;
+			if (counter == 1) {
+				start = new Date();
+				intervalID = window.setInterval(timerFunc, 250);
+			} else if (counter == stopAt) {
+				end = new Date();
+				window.clearInterval(intervalID);
+				window.removeEventListener("keydown", spaceBarCounter, true);
+				results();
+			}
+			document.getElementById("counter").innerHTML = counter;
+			break;
+		default:
+			return;
+	}
+
+	// Consume the event for suppressing "double action".
+	event.preventDefault();
+}
+
+// Show a rough timing during the key presses.
+function timerFunc() {
+	var currentTime = new Date().getTime() - start.getTime();
+	var currentAverage = Math.round(currentTime / counter);
+	document.getElementById("time").innerHTML = Math.floor(currentTime/1000) +
+		" s";
+	document.getElementById("average").innerHTML = " (∅ " + currentAverage +
+		" ms/Operation)";
+}
+
+// Register callbacks for load and keydown events.
+window.addEventListener("load", init);
+window.addEventListener("keydown", spaceBarCounter, true);
+		</script>
+
+		<style>
+body {
+	font-family: Helvetica, Arial, sans-serif;
+	text-align: center;
+}
+
+.box {
+	height: 43%;
+	margin: 0.5em;
+	border: 0.3em solid;
+	padding: 2em;
+}
+
+h3 {
+	margin-top: 1.5em;
+	font-size: 2.5em;
+}
+
+#instructions {
+	border-color: #888;
+	font-style: italic;
+}
+
+#action {
+	border-color: #800;
+}
+
+#counter {
+	margin-bottom: 0;
+	font-size: 4em;
+	font-weight: bold;
+}
+
+#time {
+	font-weight: bold;
+}
+
+#resultbox {
+	padding: 0;
+	border-color: #080;
+}
+
+.descr {
+	color: #555;
+}
+
+.timing {
+	color: #000;
+	font-size: 2em;
+	margin: 0;
+}
+
+#timeFFT {
+	color: #a00;
+}
+
+#timeDFT {
+	color: #a00;
+}
+
+.results {
+	border: none;
+	float: left;
+	margin: 0;
+	padding: 0;
+	width: 50%;
+}
+		</style>
+
+	</head>
+	<body>
+
+		<div class="box" id="action">
+			<p id="counter">0</p>
+			<p class="descr">durchgeführte Operationen</p>
+			<p class="timing"><span id="time"></span><span id="average"></span></p>
+		</div>
+
+		<div class="box" id="resultbox">
+			<div class="results">
+				<h3 class="descr">FFT (4096 Datenpunkte)</h3>
+				<p class="timing" id="opFFT"></p>
+				<p class="timing" id="timeFFT"></p>
+			</div>
+			<div class="results">
+				<h3 class="descr">DFT (4096 Datenpunkte)</h3>
+				<p class="timing" id="opDFT"></p>
+				<p class="timing" id="timeDFT"></p>
+			</div>
+			<div style="clear:both"></div>
+		</div>
+
+	</body>
+</html>
+<!-- vim: tw=78 ts=2 sw=2
+-->
