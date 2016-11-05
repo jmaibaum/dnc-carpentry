@@ -108,14 +108,11 @@ body {
 }
 
 .box {
-	height: 43%;
 	margin: 0.5em;
 	border: 0.3em solid;
-	padding: 2em;
 }
 
 h3 {
-	margin-top: 1.5em;
 	font-size: 2.5em;
 }
 
@@ -129,7 +126,6 @@ h3 {
 }
 
 #counter {
-	margin-bottom: 0;
 	font-size: 4em;
 	font-weight: bold;
 }
@@ -139,7 +135,6 @@ h3 {
 }
 
 #resultbox {
-	padding: 0;
 	border-color: #080;
 }
 
@@ -150,7 +145,6 @@ h3 {
 .timing {
 	color: #000;
 	font-size: 2em;
-	margin: 0;
 }
 
 #timeFFT {
@@ -164,8 +158,6 @@ h3 {
 .results {
 	border: none;
 	float: left;
-	margin: 0;
-	padding: 0;
 	width: 50%;
 }
 		</style>
@@ -176,21 +168,21 @@ h3 {
 		<div class="box" id="action">
 			<p id="counter">0</p>
 			<p class="descr">durchgeführte Operationen</p>
-			<p class="timing"><span id="time"></span><span id="average"></span></p>
+			<p class="timing"><span id="time">&nbsp;</span><span id="average">&nbsp;</span></p>
 		</div>
 
 		<div class="box" id="resultbox">
 			<div class="results">
 				<h3 class="descr">FFT (4096 Datenpunkte)</h3>
-				<p class="timing" id="opFFT"></p>
-				<p class="timing" id="timeFFT"></p>
+				<p class="timing" id="opFFT">&nbsp;</p>
+				<p class="timing" id="timeFFT">&nbsp;</p>
 			</div>
 			<div class="results">
 				<h3 class="descr">DFT (4096 Datenpunkte)</h3>
-				<p class="timing" id="opDFT"></p>
-				<p class="timing" id="timeDFT"></p>
+				<p class="timing" id="opDFT">&nbsp;</p>
+				<p class="timing" id="timeDFT">&nbsp;</p>
 			</div>
-			<div style="clear:both"></div>
+			<div style="clear:both">&nbsp;</div>
 		</div>
 
 	</body>
