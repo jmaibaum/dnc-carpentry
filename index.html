@@ -70,6 +70,8 @@ function spaceBarCounter(event) {
 			if (counter == 1) {
 				start = new Date();
 				intervalID = window.setInterval(timerFunc, 250);
+				document.getElementById("instructions").innerHTML =
+					"durchgeführte Operationen";
 			} else if (counter == stopAt) {
 				end = new Date();
 				window.clearInterval(intervalID);
@@ -162,8 +164,13 @@ h3 {
 
 		<div class="box" id="action">
 			<p id="counter">0</p>
-			<p class="descr">durchgeführte Operationen</p>
-			<p class="timing"><span id="time">&nbsp;</span><span id="average">&nbsp;</span></p>
+			<p class="descr" id="instructions">
+				Drücke so schnell wie möglich die Leertaste um 100 Rechenoperationen
+				durchzuführen.
+			</p>
+			<p class="timing">
+				<span id="time">&nbsp;</span><span id="average">&nbsp;</span>
+			</p>
 		</div>
 
 		<div class="box" id="resultbox">
